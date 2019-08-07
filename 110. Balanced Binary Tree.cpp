@@ -7,6 +7,28 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        int d = 0;
+        return isBalanced(root, d);
+    }
+
+    bool isBalanced(TreeNode* root, int& depth) {
+        if (!root) return true;
+        else depth++;
+        int lDepth, rDepth;
+        lDepth = rDepth = depth;
+        if (!isBalanced(root->left, lDepth)) return false;
+        if (!isBalanced(root->right, rDepth)) return false;
+        depth = max(lDepth, rDepth);
+        return abs(lDepth - rDepth) <= 1;
+    }
+};
+
+
+/**
 class Solution {
 public:
     bool isBalanced(TreeNode* root) {
@@ -23,3 +45,4 @@ public:
         return INT_MAX;
     }
 };
+**/
