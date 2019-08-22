@@ -20,7 +20,7 @@ public:
             int maxCount = 1;
             for (auto anyPair : it->second) {
                 int count = 1;
-                bool found = false;
+                /*bool found = false;
                 for (auto otherPair : m) {
                     if (otherPair.first > anyPair[1]) {
                         count = max(count, otherPair.second);
@@ -28,8 +28,12 @@ public:
                         found = true;
                     }
                 }
-                if (!found && m.find(anyPair[0]) == m.end()) m[anyPair[0]] = 1;
-                else m[anyPair[0]] = maxCount;
+                */
+                auto up = m.upper_bound(anyPair[1]);
+                if (up == m.end()) m[anyPair[0]] = 1;
+                else m[anyPair[0]] = 1 + up->second;
+                //if (!found && m.find(anyPair[0]) == m.end()) m[anyPair[0]] = 1;
+                //else m[anyPair[0]] = maxCount;
                 res = max(res, maxCount);
             }
         }
