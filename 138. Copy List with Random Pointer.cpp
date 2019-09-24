@@ -1,31 +1,46 @@
-/**
- * Definition for singly-linked list with a random pointer.
- * struct RandomListNode {
- *     int label;
- *     RandomListNode *next, *random;
- *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
- * };
- */
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node() {}
+
+    Node(int _val, Node* _next, Node* _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
 class Solution {
 public:
-    RandomListNode *copyRandomList(RandomListNode *head) {
-        std::unordered_map<RandomListNode *, RandomListNode *> dict;
-        RandomListNode *new_head = NULL;
-        RandomListNode *p = head;
-        RandomListNode *q = new RandomListNode(0);
+    Node* copyRandomList(Node* head) {
+        if (!head) return NULL;
+
+        unordered_map<Node*, Node*> m;
+        Node* newHead = new Node(head->val, NULL, NULL);
+        Node* np = newHead;
+        Node* p = head;
         while (p) {
-            q = q->next = new RandomListNode(p->label);
-            if (!new_head) new_head = q;
-            dict[p] = q;
+            m[p] = np;
+            if (p->next) {
+                np->next = new Node(p->next->val, NULL, NULL);
+            }
             p = p->next;
+            np = np->next;
         }
+        np = newHead;
         p = head;
-        q = new_head;
         while (p) {
-            q->random = p->random ? dict[p->random] : NULL;
+            if (p->random) {
+                np->random = m[p->random];
+            }
             p = p->next;
-            q = q->next;
+            np = np->next;
         }
-        return new_head;
+        return newHead;
     }
 };
