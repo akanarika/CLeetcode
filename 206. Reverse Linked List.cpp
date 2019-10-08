@@ -9,6 +9,40 @@
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
+        /** iteratively
+        if (!head) return NULL;
+        ListNode* h = head;
+        ListNode* p = head;
+        while (p->next) {
+            ListNode* q = head->next;
+            if (q) {
+                p->next = q->next;
+                q->next = h;
+                h = q;
+            }
+        }
+        return h;
+        **/
+
+        // recursively
+        if (!head) return NULL;
+        auto p = reverseSub(head);
+        return p.first;
+    }
+
+    pair<ListNode*, ListNode*> reverseSub(ListNode* p) {
+        if (!p->next) return make_pair(p, p);
+        pair<ListNode*, ListNode*> headTail = reverseSub(p->next);
+        p->next = NULL;
+        headTail.second->next = p;
+        return make_pair(headTail.first, p);
+    }
+};
+
+/**
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
         if (head == NULL) return NULL;
         
         if (head->next != NULL) {
@@ -21,9 +55,9 @@ public:
         }
     }
 };
+**/
 
 /**
-
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
@@ -41,3 +75,4 @@ public:
     }
 };
 **/
+

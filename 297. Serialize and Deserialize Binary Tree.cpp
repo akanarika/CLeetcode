@@ -7,6 +7,7 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+/**
 class Codec {
 public:
 
@@ -62,6 +63,62 @@ public:
             p++;
         }
         return v[0];
+    }
+};
+**/
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        ostringstream os;
+        serializeStream(root, os);
+        return os.str();
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        istringstream is(data);
+        return deserializeStream(is);
+    }
+
+private:
+    void serializeStream(TreeNode* root, ostringstream& os) {
+        if (root) {
+            os << root->val << " ";
+            serializeStream(root->left, os);
+            serializeStream(root->right, os);
+        } else {
+            os << "# ";
+        }
+    }
+
+    TreeNode* deserializeStream(istringstream& is) {
+        string s;
+        if (is >> s) {
+            if (s != "#") {
+                TreeNode* root = new TreeNode(stoi(s));
+                root->left = deserializeStream(is);
+                root->right = deserializeStream(is);
+                return root;
+            } else {
+                return NULL;
+            }
+        }
+        return NULL;
     }
 };
 

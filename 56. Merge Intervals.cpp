@@ -7,6 +7,7 @@
  *     Interval(int s, int e) : start(s), end(e) {}
  * };
  */
+/**
 class Solution {
 public:
     vector<Interval> merge(vector<Interval>& intervals) {
@@ -24,5 +25,28 @@ public:
             }
         }
         return intervals;
+    }
+};
+**/
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        map<int, int> m;
+        for (int i = 0; i < intervals.size(); i++) {
+            m[intervals[i][0]] = max(m[intervals[i][0]], intervals[i][1]);
+        }
+
+        int end = INT_MIN;
+        vector<vector<int>> res;
+        for (auto p : m) {
+            if (p.first <= end) {
+                res[res.size() - 1][1] = max(p.second, end);
+            } else {
+                res.push_back({p.first, p.second});
+            }
+            end = max(p.second, end);
+        }
+        return res;
     }
 };
