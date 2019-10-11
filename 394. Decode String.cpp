@@ -1,6 +1,40 @@
 class Solution {
 public:
     string decodeString(string s) {
+        istringstream in(s);
+        return decode(in);
+    }
+
+    string decode(istringstream& in) {
+        string s;
+        while(in.peek() != EOF) {
+            if ((in.peek() >= '0') && (in.peek() <= '9')) {
+                int num;
+                if (in >> num) {
+                    string ss = decode(in);
+                    while (num-- > 0) {
+                        s += ss;
+                    }
+                }
+            } else if (in.peek() == '[') {
+                in.get();
+            } else if (in.peek() == ']') {
+                in.get();
+                return s;
+            } else {
+                s += in.peek();
+                in.get();
+            }
+        }
+        return s;
+    }
+};
+
+
+/**
+class Solution {
+public:
+    string decodeString(string s) {
         if (s.length() < 2) return s;
         
         int p = 0;
@@ -44,3 +78,4 @@ public:
         return fs + decodeString(s.substr(b2 + 1));
     }
 };
+**/
