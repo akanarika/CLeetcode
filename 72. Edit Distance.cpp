@@ -1,3 +1,31 @@
+/*
+ * @lc app=leetcode id=72 lang=cpp
+ *
+ * [72] Edit Distance
+ */
+
+// @lc code=start
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        if (word1.empty() || word2.empty()) return max(word1.length(), word2.length());
+        vector<vector<int>> dp(word1.length(), vector<int>(word2.length(), 0));
+
+        for (int i = 0; i < word1.length(); i++) {
+            for (int j = 0; j < word2.length(); j++) {
+                int ins = i > 0 ? dp[i - 1][j] : j;
+                int del = j > 0 ? dp[i][j - 1] : i;
+                int rep = ((i > 0) && (j > 0)) ? dp[i - 1][j - 1] : max(i, j);
+                dp[i][j] = min(min(ins, del) + 1, rep + (word1[i] != word2[j]));
+            }
+        }
+
+        return dp[word1.length() - 1][word2.length() - 1];
+    }
+};
+// @lc code=end
+
+/**
 class Solution {
 public:
     int minDistance(string word1, string word2) {
@@ -28,3 +56,4 @@ public:
         return opt[word1.size()][word2.size()];
     }
 };
+**/
