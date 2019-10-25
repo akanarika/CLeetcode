@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode id=234 lang=cpp
+ *
+ * [234] Palindrome Linked List
+ */
+
+// @lc code=start
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -6,6 +13,34 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if (!head) return true;
+        return isPalindrome(head, head);
+    }
+
+    bool isPalindrome(ListNode*& p, ListNode* q) {
+        if (!q) return true;
+        bool isP = isPalindrome(p, q->next);
+        if (p->val == q->val) {
+            p = p->next;
+            return isP;
+        }
+        return false;
+    }
+};
+// @lc code=end
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
@@ -28,3 +63,4 @@ public:
         return 1;
     }
 };
+**/

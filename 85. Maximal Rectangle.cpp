@@ -9,6 +9,43 @@ class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& matrix) {
         if (matrix.empty() || matrix[0].empty()) return 0;
+
+        int h = matrix.size();
+        int w = matrix[0].size();
+        int res = 0;
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                if (matrix[i][j] == '1') {
+                    int lastW = w;
+                    for (int ii = i; ii < h; ii++) {
+                        for (int jj = j; jj < lastW; jj++) {
+                            if (matrix[ii][jj] != '1') {
+                                lastW = jj;
+                                break;
+                            }
+                        }
+                        res = max(res, (lastW - j) * (ii - i + 1));
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
+// @lc code=end
+
+/*
+ * @lc app=leetcode id=85 lang=cpp
+ *
+ * [85] Maximal Rectangle
+ */
+
+// @lc code=start
+/**
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.empty() || matrix[0].empty()) return 0;
         unordered_map<int, pair<int, int>> p;
         int largest = 0;
         for (int i = 0; i < matrix.size(); i++) {
@@ -41,4 +78,5 @@ public:
         return large;
     }
 };
+**/
 // @lc code=end
