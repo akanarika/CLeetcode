@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode id=25 lang=cpp
+ *
+ * [25] Reverse Nodes in k-Group
+ */
+
+// @lc code=start
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -6,6 +13,52 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if (k == 1) return head;
+
+        ListNode* preHead = new ListNode(0);
+        preHead->next = head;
+
+        ListNode* pre = preHead;
+        ListNode* tail = pre;
+        while (pre->next) {
+            int i = k;
+            while (i-- > 0) {
+                if (!tail->next) return preHead->next;
+                tail = tail->next;
+            }
+            pre = reverse(pre, tail);
+            tail = pre;
+        }
+        return preHead->next;
+    }
+
+    ListNode* reverse(ListNode* pre, ListNode* tail) {
+        ListNode* nxt = pre->next;
+        ListNode* tailNext = tail->next;
+        while (pre->next && pre->next != tail) {
+            ListNode* p = pre->next;
+            pre->next = p->next;
+            p->next = tailNext;
+            tail->next = p;
+            tailNext = p;
+        }
+        return nxt;
+    }
+};
+// @lc code=end
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
@@ -61,3 +114,4 @@ public:
         
     }
 };
+**/

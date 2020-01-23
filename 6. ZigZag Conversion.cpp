@@ -19,3 +19,33 @@ public:
         return result;
     }
 };
+
+/**
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        int n = s.length();
+        if (numRows <= 1 || n <= numRows) return s;
+
+        int left = numRows + numRows - 2;
+        int right = 0;
+        string res = "";
+        for (int r = 0; r < numRows; r++) {
+            int i = r;
+            while (i < n) {
+                res += s[i];
+                if (left > 0) {
+                    i += left;
+                    if (i < n) res += s[i];
+                }
+                if (right > 0) i += right;
+                else i += left;
+            }
+            left -= 2;
+            right += 2;
+        }
+
+        return res;
+    }
+};
+**/
