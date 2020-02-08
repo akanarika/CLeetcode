@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode id=337 lang=cpp
+ *
+ * [337] House Robber III
+ */
+
+// @lc code=start
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -7,6 +14,42 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+class Solution {
+public:
+    int rob(TreeNode* root) {
+        vector<int> res = robnode(root);
+        return max(res[0], res[1]);
+    }
+
+private:
+    vector<int> robnode(TreeNode* root) {
+        if (!root) {
+            return {0, 0};
+        }
+
+        vector<int> left = robnode(root->left);
+        vector<int> right = robnode(root->right);
+
+        vector<int> res = {
+            max(left[0], left[1]) + max(right[0], right[1]),
+            left[0] + right[0] + root->val
+        };
+
+        return res;
+    }
+};
+// @lc code=end
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+/*
 class Solution {
 public:
     int rob(TreeNode* root) {
@@ -31,3 +74,5 @@ public:
         return lexclude + rexclude + root->val;
     }
 };
+*/
+
