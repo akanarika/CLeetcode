@@ -1,6 +1,41 @@
 class Solution {
 public:
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        vector<int> parent(edges.size() + 1, 0);
+        
+        for (auto edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            if (!parent[u]) {
+                parent[u] = u;
+            }
+            if (!parent[v]) {
+                parent[v] = v;
+            }
+            
+            int pu = find(u, parent);
+            int pv = find(v, parent);
+            if (pu == pv) return edge;
+            
+            parent[pu] = pv;
+        }
+        
+        return {};
+    }
+private:
+    int find(int u, vector<int>& parent) {
+        while (parent[u] != u) {
+            parent[u] = parent[parent[u]];
+            u = parent[u];
+        }
+        return u;
+    }
+};
+
+/**
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         unordered_map<int, unordered_set<int>> sets;
         vector<int> res;
         for (auto e : edges) {
@@ -26,3 +61,4 @@ public:
         return res;
     }
 };
+**/

@@ -1,5 +1,43 @@
 class Solution {
 public:
+    typedef pair<int, int> pi;
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        vector<vector<pair<int, int>>> neighbors;
+        neighbors.resize(N + 1);
+        for (const auto& time : times) {
+            int u = time[0];
+            int v = time[1];
+            int w = time[2];
+            neighbors[u].push_back({v, w});
+        }
+        
+        priority_queue<pi, vector<pi>, greater<pi>> q;
+        vector<int> weight(N + 1, INT_MAX);
+        q.push(make_pair(0, K));
+        weight[K] = 0;
+        while (!q.empty()) {
+            auto node = q.top().second;
+            q.pop();
+            for (auto nei : neighbors[node]) {
+                if (weight[node] + nei.second < weight[nei.first]) {
+                    weight[nei.first] = weight[node] + nei.second;
+                    q.push(make_pair(weight[node] + nei.second, nei.first));
+                }
+            }
+        }
+        
+        int res = -1;
+        for (int i = 1; i <= N; i++) {
+            res = max(res, weight[i]);
+        }
+        
+        return res == INT_MAX ? -1 : res;
+    }
+};
+
+/**
+class Solution {
+public:
     int networkDelayTime(vector<vector<int>>& times, int N, int K) {
         unordered_map<int, int> timeToNode;
         unordered_map<int, vector<vector<int>>> edges;
@@ -36,3 +74,4 @@ public:
         
     }
 };
+**/
