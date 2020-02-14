@@ -1,4 +1,35 @@
+/*
+ * @lc app=leetcode id=33 lang=cpp
+ *
+ * [33] Search in Rotated Sorted Array
+ */
+
+// @lc code=start
 class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if (nums.empty()) return -1;
+        int left = 0;
+        int right = nums.size();
+        return search(nums, left, right, target);
+    }
+
+private:
+    int search(vector<int>& nums, int left, int right, int target) {
+        if ((nums[left] < nums[right - 1]) && (target < nums[left] || target > nums[right - 1])) return -1;
+        if (left == right || left == right - 1) return nums[left] == target ? left : -1;
+        int mid = (left + right) / 2;
+        int findLeft = -1;
+        if ((nums[left] > nums[mid - 1]) || (nums[left] <= nums[mid - 1]) && (target >= nums[left] && target <= nums[mid - 1])) findLeft = search(nums, left, mid, target);
+        int findRight = -1;
+        if ((nums[mid] > nums[right - 1]) || (nums[mid] <= nums[right - 1]) && (target >= nums[mid] && target <= nums[right - 1])) findRight = search(nums, mid, right, target);
+        if (findLeft == -1 && findRight == -1) return -1;
+        return findLeft == -1 ? findRight : findLeft;
+    }
+};
+// @lc code=end**
+
+/* class Solution {
 public:
     int search(vector<int>& nums, int target) {
         int s = 0;
@@ -25,7 +56,6 @@ public:
     }
 };
 
-/**
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
@@ -64,3 +94,4 @@ public:
     }
 };
 **/
+
