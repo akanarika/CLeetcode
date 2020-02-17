@@ -1,10 +1,3 @@
-/*
- * @lc app=leetcode id=98 lang=cpp
- *
- * [98] Validate Binary Search Tree
- */
-
-// @lc code=start
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -14,6 +7,32 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {  
+        if (!root) return true;
+        int left = 0;
+        int right = 0;
+        return isValid(root, left, right);
+    }
+    
+private:
+    bool isValid(TreeNode* root, int& left, int& right) {
+        if (!root) return true;
+        left = right = root->val;
+        int leftMax = INT_MIN;
+        if (root->left && (!isValid(root->left, left, leftMax) || leftMax >= root->val)) {
+            return false;
+        }
+        int rightMin = INT_MAX;
+        if (root->right && (!isValid(root->right, rightMin, right) || rightMin <= root->val)) {
+            return false;
+        }
+        return true;
+    }
+};
+
+/**
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
@@ -42,4 +61,4 @@ public:
         return false;
     }
 };
-// @lc code=end
+**/

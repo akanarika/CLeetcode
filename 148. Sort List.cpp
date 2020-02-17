@@ -8,6 +8,40 @@
  */
 class Solution {
 public:
+	ListNode* sortList(ListNode* head) {
+		if (!head || !head->next) return head;
+		ListNode* p = head;
+		ListNode* q = head;
+		while (q->next && q->next->next) {
+			p = p->next;
+			q = q->next->next;
+		}
+		ListNode* mid = p->next;
+		p->next = NULL;
+		return merge(sortList(head), sortList(mid));
+	}
+
+	ListNode* merge(ListNode* l, ListNode* r) {
+		ListNode* pre = new ListNode(0);
+		ListNode* p = pre;
+		while (l || r) {
+			if (!l || (l && r && l->val > r->val)) {
+				p->next = r;
+				r = r->next;
+			}
+			else if (!r || (l && r && l->val <= r->val)) {
+				p->next = l;
+				l = l->next;
+			}
+			p = p->next;
+		}
+		return pre->next;
+	}
+};
+
+/**
+class Solution {
+public:
     ListNode* sortList(ListNode* head) {
         if (head == NULL || head->next == NULL) return head;
         ListNode* mid;
@@ -55,3 +89,4 @@ public:
         return new_head;
     }
 };
+**/

@@ -9,6 +9,32 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
+        map<int, unordered_set<ListNode*>> m;
+        for (auto node : lists) {
+            if (!node) continue;
+            m[node->val].insert(node);
+        }
+        
+        ListNode* newHead = new ListNode(0);
+        ListNode* p = newHead;
+        while (!m.empty()) {
+            ListNode* h = *(m.begin()->second).begin();
+            ListNode* hn = h->next;
+            m.begin()->second.erase(h);
+            if (m.begin()->second.empty()) m.erase(m.begin()->first);
+            h->next = NULL;
+            p->next = h;
+            p = p->next;
+            if (hn) m[hn->val].insert(hn);
+        }
+        return newHead->next;
+    }
+};
+
+/**
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
         vector<ListNode *> ps;
         for (size_t i = 0; i < lists.size(); i++) {
             ps.push_back(lists[i]);
@@ -30,3 +56,5 @@ public:
         return head;
     }
 };
+
+**/

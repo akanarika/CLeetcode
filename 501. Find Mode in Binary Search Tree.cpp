@@ -11,6 +11,35 @@ class Solution {
 public:
     vector<int> findMode(TreeNode* root) {
         if (!root) return {};
+        vector<int> res;
+        int last = root->val ^ 1;
+        int currCount = 0;
+        int maxCount = 0;
+        find(root, last, currCount, res, maxCount);
+        return res;
+    }
+    
+private:
+    void find(TreeNode* root, int& last, int& currCount, vector<int>& max, int& maxCount) {
+        if (!root) return;
+        find(root->left, last, currCount, max, maxCount);
+        if (last != root->val) currCount = 0;
+        currCount++;
+        if (currCount > maxCount) {
+            max.clear();
+            max.push_back(root->val);
+            maxCount = currCount;
+        } else if (maxCount == currCount) max.push_back(root->val);
+        last = root->val;
+        find(root->right, last, currCount, max, maxCount);
+    }
+};
+
+/**
+class Solution {
+public:
+    vector<int> findMode(TreeNode* root) {
+        if (!root) return {};
 
         int maxCount = 0;
         int maxEle = INT_MAX;
@@ -64,3 +93,4 @@ public:
         countAll(node->right, maxCount, currCount, lastEle, res);
     }
 };
+**/
