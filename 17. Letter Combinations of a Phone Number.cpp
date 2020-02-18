@@ -1,3 +1,34 @@
+/*
+ * @lc app=leetcode id=17 lang=cpp
+ *
+ * [17] Letter Combinations of a Phone Number
+ */
+
+// @lc code=start
+class Solution {
+private:
+    vector<string> dic = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    void addString(string digits, string curr, int i, vector<string>& res) {
+        for (auto c : dic[digits[i] - '2']) {
+            if (i == digits.size() - 1) {
+                res.push_back(curr + c);
+                continue;
+            }
+            addString(digits, curr + c, i + 1, res);
+        }
+    }
+
+public:
+    vector<string> letterCombinations(string digits) {
+        if (digits.empty()) return {};
+        vector<string> res;
+        addString(digits, "", 0, res);
+        return res;
+    }
+};
+// @lc code=end
+
+/**
 class Solution {
 public:
     vector<string> letterCombinations(string digits) {
@@ -20,3 +51,4 @@ public:
         return res;
     }
 };
+**/

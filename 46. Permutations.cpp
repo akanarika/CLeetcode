@@ -18,3 +18,27 @@ public:
         }
     }
 };
+
+/**
+class Solution {
+private:
+    void permu(vector<int>& nums, vector<int> curr, vector<vector<int>>& res) {
+        if (curr.size() == nums.size()) {
+            res.push_back(curr);
+            return;
+        }
+        for (int j = 0; j < nums.size(); j++) {
+            if (find(curr.begin(), curr.end(), nums[j]) != curr.end()) continue;
+            curr.push_back(nums[j]);
+            permu(nums, curr, res);
+            curr.pop_back();
+        }
+    }
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> res;
+        permu(nums, {}, res);
+        return res;
+    }
+};
+**/

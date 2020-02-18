@@ -1,3 +1,35 @@
+/*
+ * @lc app=leetcode id=22 lang=cpp
+ *
+ * [22] Generate Parentheses
+ */
+
+// @lc code=start
+class Solution {
+private:
+    void generate(int left, int right, string curr, vector<string>& res, int n) {
+        if (curr.size() == 2 * n) {
+            res.push_back(curr);
+            return;
+        }
+
+        if (left - right > 0) {
+            generate(left, right + 1, curr + ")", res, n);
+        }
+        if (left < n) {
+            generate(left + 1, right, curr + "(", res, n);
+        }
+    }
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        generate(0, 0, "", res, n);
+        return res;
+    }
+};
+// @lc code=end
+
+/**
 class Solution {
 public:
     vector<string> generateParenthesis(int n) {
@@ -22,3 +54,5 @@ public:
         return res;
     }
 };
+
+**/
