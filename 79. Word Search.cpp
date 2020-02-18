@@ -1,3 +1,40 @@
+class Solution {
+private:
+    int h, w;
+    bool exist(vector<vector<char>>& board, int r, int c, string word, int j) {
+        if (r < 0 || r >= h) return false;
+        if (c < 0 || c >= w) return false;
+        if (board[r][c] == '-') return false;
+        if (board[r][c] == word[j]) {
+            if (j == word.size() - 1) return true;
+            board[r][c] = '-';
+            // up
+            if (exist(board, r - 1, c, word, j + 1)) return true;
+            // down
+            if (exist(board, r + 1, c, word, j + 1)) return true;
+            // left
+            if (exist(board, r, c - 1, word, j + 1)) return true;
+            // right
+            if (exist(board, r, c + 1, word, j + 1)) return true;
+            board[r][c] = word[j];
+        }
+        return false;
+    }
+    
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        if (board.empty() || board[0].empty()) return false;
+        h = board.size();
+        w = board[0].size();
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                if (exist(board, i, j, word, 0)) return true;
+            }
+        }
+        return false;
+    }
+};
+
 /*
  * @lc app=leetcode id=79 lang=cpp
  *
@@ -5,6 +42,7 @@
  */
 
 // @lc code=start
+/**
 class Solution {
 public:
     bool exist(vector<vector<char>>& board, string word) {
@@ -45,3 +83,4 @@ public:
     }
 };
 // @lc code=end
+**/
