@@ -1,3 +1,4 @@
+// @lc code=end
 /*
  * @lc app=leetcode id=85 lang=cpp
  *
@@ -5,6 +6,37 @@
  */
 
 // @lc code=start
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.empty() || matrix[0].empty()) return 0;
+        int h = matrix.size();
+        int w = matrix[0].size();
+        vector<vector<int>> wid(h, vector<int>(w, 0));
+
+        int maxArea = 0;
+        for (int r = 0; r < h; r++) {
+            for (int c = 0; c < w; c++) {
+                if (matrix[r][c] == '1') {
+                    wid[r][c] = c > 0 ? wid[r][c - 1] + 1 : 1;
+                    int minW = wid[r][c];
+                    int rr = r;
+                    while (rr >= 0 && matrix[rr][c] == '1') {
+                        minW = min(minW, wid[rr][c]);
+                        maxArea = max(maxArea, (r - rr + 1) * minW);
+                        rr--;
+                    }
+                } else {
+                    wid[r][c] = 0;
+                }
+            }
+        }
+        return maxArea;
+    }
+};
+
+// @lc code=end
+/**
 class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& matrix) {
@@ -32,16 +64,7 @@ public:
         return res;
     }
 };
-// @lc code=end
 
-/*
- * @lc app=leetcode id=85 lang=cpp
- *
- * [85] Maximal Rectangle
- */
-
-// @lc code=start
-/**
 class Solution {
 public:
     int maximalRectangle(vector<vector<char>>& matrix) {
@@ -79,4 +102,4 @@ public:
     }
 };
 **/
-// @lc code=end
+

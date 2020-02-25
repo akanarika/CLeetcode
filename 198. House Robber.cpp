@@ -9,6 +9,21 @@ class Solution {
 public:
     int rob(vector<int>& nums) {
         if (nums.empty()) return 0;
+        vector<int> robbed(nums.size(), 0);
+        for (int i = 0; i < nums.size(); i++) {
+            robbed[i] = max(nums[i] + (i >= 2 ? robbed[i - 2] : 0),
+                    i >= 1 ? robbed[i - 1] : 0);
+        }
+        return robbed[nums.size() - 1];
+    }
+};
+// @lc code=end
+
+/**
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.empty()) return 0;
         if (nums.size() == 1) return nums[0];
 
         vector<int> dp(nums.size(), 0);
@@ -20,4 +35,4 @@ public:
         return dp[nums.size() - 1];
     }
 };
-// @lc code=end
+**/
