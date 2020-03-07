@@ -7,6 +7,25 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+class Solution {
+private:
+    int length(TreeNode* node, int& maxDiameter) {
+        if (!node) return 0;
+        int left = length(node->left, maxDiameter);
+        int right = length(node->right, maxDiameter);
+        maxDiameter = max(left + right, maxDiameter);
+        return max(left, right) + 1;
+    }
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        int maxDiameter = 0;
+        length(root, maxDiameter);
+        return maxDiameter;
+    }
+};
+
+/**
 class Solution {
 public:
     int diameterOfBinaryTree(TreeNode* root) {
@@ -27,3 +46,4 @@ public:
         return max(l, r) + 1;
     }
 };
+**/
