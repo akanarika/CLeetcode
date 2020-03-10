@@ -1,3 +1,65 @@
+/*
+ * @lc app=leetcode id=399 lang=cpp
+ *
+ * [399] Evaluate Division
+ */
+
+// @lc code=start
+class Solution {
+private:
+    unordered_map<string, string> parents;
+    unordered_map<string, unordered_map<string, double>> div;
+    string find(string a) {
+        if (!parents.count(a)) return "";
+        while (parents[a] != parents[parents[a]]) {
+            div[parents[parents[a]]][a] = div[parents[parents[a]]][parents[a]] * div[parents[a]][a];
+            parents[a] = parents[parents[a]];
+            a = parents[a];
+        }
+        return parents[a];
+    }
+public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        for (int i = 0; i < equations.size(); i++) {
+            auto eq = equations[i];
+            string a = eq[0];
+            string b = eq[1];
+            double m = values[i];
+            if (!parents.count(a)) {
+                parents[a] = a;
+                div[a][a] = 1.0;
+            }
+            if (!parents.count(b)) {
+                parents[b] = b;
+                div[b][b] = 1.0;
+            }
+            string pa = find(a);
+            string pb = find(b);
+            parents[pb] = pa;
+            double ka = div[pa][a];
+            double kb = div[pb][b];
+            div[pa][pb] = m * ka / kb;
+                div[pb][pa] = 1.0 / div[pa][pb];
+        }
+
+        vector<double> res;
+        for (const auto& q : queries) {
+            string a = q[0];
+            string b = q[1];
+            string pa = find(a);
+            string pb = find(b);
+            if (!pa.empty() && !pb.empty() && pa == pb) {
+                res.push_back(div[pb][b] / div[pa][a]);
+            } else {
+                res.push_back(-1.0);
+            }
+        }
+        return res;
+    }
+};
+// @lc code=end
+
+/**
 class Solution {
 public:
     vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
@@ -55,3 +117,4 @@ public:
         return res;
     }
 };
+**/
