@@ -1,10 +1,33 @@
-/*
- * @lc app=leetcode id=207 lang=cpp
- *
- * [207] Course Schedule
- */
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> degree(numCourses, 0);
+        stack<int> zeros;
+        unordered_map<int, unordered_set<int>> subs;
+        for (const auto& pre : prerequisites) {
+            degree[pre[0]]++;
+            subs[pre[1]].insert(pre[0]);
+        }
+        
+        for (int i = 0; i < numCourses; i++) {
+            if(!degree[i]) zeros.push(i);
+        }
+        
+        int k = numCourses;
+        while (!zeros.empty()) {
+            int cour = zeros.top();
+            zeros.pop();
+            k--;
+            for (auto sub : subs[cour]) {
+                degree[sub]--;
+                if (!degree[sub]) zeros.push(sub);
+            }
+        }
+        return !k;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
@@ -38,7 +61,7 @@ public:
         return true;
     }
 };
-// @lc code=end
+**/
 
 /**
 class Solution {
