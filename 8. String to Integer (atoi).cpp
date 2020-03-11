@@ -1,9 +1,46 @@
-/*
- * @lc app=leetcode id=8 lang=cpp
- *
- * [8] String to Integer (atoi)
- */
+class Solution {
+private:
+    int myAtoi(istringstream& in) {
+        int sign = 0;
+        int num = 0;
+        char c;
+        while (in >> c) {
+            if (!isdigit(c)) {
+                if(c == '-' && num == 0 && !sign) sign = -1;
+                else if (c == '+' && num == 0 && !sign) sign = 1;
+                else return num;
+                if (!isdigit(in.peek())) return num;
+                continue;
+            }
+            if (!sign) sign = 1;
+            int x = c - '0';
+            if (sign > 0) {
+                if ((INT_MAX / 10 < num) || (INT_MAX - x < num * 10)) {
+                    return INT_MAX;
+                } else {
+                    num = num * 10 + x;
+                }
+            } else {
+                if (num > 0) num *= -1;
+                if((INT_MIN / 10) > num || (INT_MIN + x > num * 10)) {
+                    return INT_MIN;
+                } else {
+                    num = num * 10 - x;
+                }
+            }
+            if (!isdigit(in.peek())) return num;
+        }
+        return num;
+    }
+    
+public:
+    int myAtoi(string str) {
+        istringstream in(str);
+        return myAtoi(in);
+    }
+};
 
+/**
 // @lc code=start
 class Solution {
 public:
@@ -48,7 +85,7 @@ public:
         return res * sign;
     }
 };
-// @lc code=end
+**/
 
 /**
 class Solution {
