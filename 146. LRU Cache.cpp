@@ -1,3 +1,53 @@
+/*
+ * @lc app=leetcode id=146 lang=cpp
+ *
+ * [146] LRU Cache
+ */
+
+// @lc code=start
+class LRUCache {
+private:
+    size_t cap;
+    list<int> l;
+    unordered_map<int, pair<list<int>::iterator, int>> kv;
+
+public:
+    LRUCache(int capacity) {
+        cap = capacity;
+    }
+    
+    int get(int key) {
+        if (kv.count(key)) {
+            l.splice(l.begin(), l, kv[key].first);
+            return kv[key].second;
+        }
+        return -1;
+    }
+    
+    void put(int key, int value) {
+        if (kv.count(key)) {
+            kv[key].second = value;
+            l.splice(l.begin(), l, kv[key].first);
+            return;
+        }
+        l.push_front(key);
+        kv[key] = make_pair(l.begin(), value);
+        if (l.size() > cap) {
+            kv.erase(l.back());
+            l.pop_back();
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
+// @lc code=end
+
+/**
 class LRUCache {
     unordered_map<int, list<pair<int, int>>::iterator> lit;
     list<pair<int, int>> l;
@@ -39,10 +89,5 @@ public:
 
     }
 };
+**/
 
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache* obj = new LRUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */

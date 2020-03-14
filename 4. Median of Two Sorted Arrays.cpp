@@ -8,6 +8,45 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        if (nums1.empty() && nums2.empty()) return 0;
+        if (nums1.size() > nums2.size()) swap(nums1, nums2);
+        int m = nums1.size();
+        int n = nums2.size();
+
+        int l1 = 0;
+        int h1 = 2 * m + 1;
+        int p1 = l1 + (h1 - l1) / 2;
+        int p2 = m + n - p1;
+        int left2 = nums2[(p2 - 1) / 2];
+        int right2 = nums2[p2 / 2];
+        if (nums1.empty()) return (left2 + right2) / 2.0;
+        int left1 = nums1[(p1 - 1) / 2];
+        int right1 = nums1[p1 / 2];
+
+        while (!(left1 <= right2 && left2 <= right1) && !(p1 == 0 || p1 == 2 * m)) {
+            if (left1 > right2) {
+                h1 = p1;
+            } else {
+                l1 = p1;
+            }
+            p1 = l1 + (h1 - l1) / 2;
+            p2 = m + n - p1;
+            left1 = p1 == 0 ? INT_MIN : nums1[(p1 - 1) / 2];
+            right1 = p1 == 2 * m ? INT_MAX : nums1[p1 / 2];
+            left2 = p2 == 0 ? INT_MIN : nums2[(p2 - 1) / 2];
+            right2 = p2 == 2 * n ? INT_MAX : nums2[p2 / 2];
+        }
+
+        return (max(left1, left2) + min(right1, right2)) / 2.0;
+        
+    }
+};
+
+// @lc code=end
+/**
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         int n = nums1.size();
         int m = nums2.size();
         if (n > m) {
@@ -47,9 +86,7 @@ public:
         return 0;
     }
 };
-// @lc code=end
 
-/**
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
@@ -91,3 +128,4 @@ public:
 };
 
  **/
+
