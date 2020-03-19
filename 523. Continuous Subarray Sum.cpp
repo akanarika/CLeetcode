@@ -2,6 +2,32 @@ class Solution {
 public:
     bool checkSubarraySum(vector<int>& nums, int k) {
         if (nums.size() < 2) return false;
+        for (int i = 0; i < nums.size() - 1; i++) {
+            if (!nums[i] && !nums[i + 1]) return true;
+        }
+        if (!k) return false;
+        
+        unordered_map<int, int> mods;
+        mods[0] = -1;
+        int sum = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            int m = sum % k;
+            if (!mods.count(m)) {
+                mods[sum % k] = i;
+                continue;
+            }
+            if (i - mods[m] > 1) return true;
+        }
+        return false;
+    }
+};
+
+/**
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        if (nums.size() < 2) return false;
 
         int sum = 0;
         for (auto num : nums) {
@@ -25,3 +51,4 @@ public:
         return false;
     }
 };
+**/
