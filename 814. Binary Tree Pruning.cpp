@@ -1,10 +1,3 @@
-/*
- * @lc app=leetcode id=814 lang=cpp
- *
- * [814] Binary Tree Pruning
- */
-
-// @lc code=start
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -14,6 +7,26 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+class Solution {
+private:
+    bool containOne(TreeNode* root) {
+        if (!root) return false;
+        bool lc = containOne(root->left);
+        bool rc = containOne(root->right);
+        if (!lc) root->left = NULL;
+        if (!rc) root->right = NULL;
+        return root->val || lc || rc;
+    }
+    
+public:
+    TreeNode* pruneTree(TreeNode* root) {
+        containOne(root);
+        return root;
+    }
+};
+
+/**
 class Solution {
 private:
     unordered_map<TreeNode*, bool> containNoOne;
@@ -49,4 +62,4 @@ public:
         }
     }
 };
-// @lc code=end
+**/

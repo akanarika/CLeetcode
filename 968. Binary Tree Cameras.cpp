@@ -7,6 +7,34 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+class Solution {
+private:
+    int num;
+    // 0 - not covered, 1 - covered, 2 - camera
+    int check(TreeNode* node) {
+        if (!node) return 1;
+        
+        int cl = check(node->left);
+        int cr = check(node->right);
+        if (!cl || !cr) {
+            num++;
+            return 2;
+        }
+        if (cl == 2 || cr == 2) {
+            return 1;
+        }
+        return 0;
+    }
+public:
+    int minCameraCover(TreeNode* root) {
+        num = 0;
+        if (!check(root)) num++;
+        return num;
+    }
+};
+
+/**
 class Solution {
 public:
     int minCameraCover(TreeNode* root) {
@@ -31,3 +59,4 @@ private:
         return 0;
     }
 };
+**/

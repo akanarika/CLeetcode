@@ -1,10 +1,28 @@
-/*
- * @lc app=leetcode id=785 lang=cpp
- *
- * [785] Is Graph Bipartite?
- */
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        unordered_map<int, int> color;
+        // 1 - blue;
+        // 2 - red;
+        stack<int> stk;
+        for (int i = 0; i < graph.size(); i++) stk.push(i);
+        
+        while (!stk.empty()) {
+            int node = stk.top();
+            stk.pop();
+            if (!color[node]) color[node] = 1;
+            for (auto neighbor : graph[node]) {
+                if (!color[neighbor]) {
+                    color[neighbor] = (color[node] == 1) ? 2 : 1;
+                    stk.push(neighbor);
+                } else if (color[neighbor] == color[node]) return false;
+            }
+        }
+        return true;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     bool isBipartite(vector<vector<int>>& graph) {
@@ -30,4 +48,4 @@ public:
         return true;
     }
 };
-// @lc code=end
+**/

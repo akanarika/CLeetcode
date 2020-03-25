@@ -1,10 +1,29 @@
-/*
- * @lc app=leetcode id=152 lang=cpp
- *
- * [152] Maximum Product Subarray
- */
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        if (nums.empty()) return -1;
+        int maxPos = -1;
+        int minNeg = 1;
+        int res = nums[0];
+        for (const auto& num : nums) {
+            int mPos = maxPos;
+            int mNeg = minNeg;
+            if (num > 0) {
+                maxPos = (mPos > 0) ? mPos * num : num;
+                minNeg = (mNeg < 0) ? mNeg * num : 1;
+            } else if (num < 0) {
+                maxPos = (mNeg < 0) ? mNeg * num : -1;
+                minNeg = (mPos > 0) ? mPos * num : num;
+            } else {
+                maxPos = minNeg = 0;
+            }
+            if (maxPos >= 0) res = max(res, maxPos);
+        }
+        return res;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
@@ -25,9 +44,7 @@ public:
         return maxPro;
     }
 };
-// @lc code=end
 
-/**
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {

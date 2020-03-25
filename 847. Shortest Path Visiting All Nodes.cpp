@@ -1,10 +1,35 @@
-/*
- * @lc app=leetcode id=847 lang=cpp
- *
- * [847] Shortest Path Visiting All Nodes
- */
+class Solution {
+public:
+    int shortestPathLength(vector<vector<int>>& graph) {
+        int allVisited = (1 << graph.size()) - 1;
+        unordered_set<int> visited; // node << 16 | state
+        queue<pair<int, int>> q;
+        for (int i = 0; i < graph.size(); i++) {
+            int curr = (1 << i);
+            q.emplace(i, curr);
+        }
+        int step = 0;
+        while (!q.empty()) {
+            int cnt = q.size();
+            while (cnt-- > 0) {
+                int node = q.front().first;
+                int curr = q.front().second;
+                q.pop();
+                if (curr == allVisited) return step;
+                if (visited.count((node << 16) | curr)) continue;
+                for (const auto& neighbor : graph[node]) {
+                    int state = curr | (1 << neighbor);
+                    q.emplace(neighbor, state);
+                }
+                visited.insert((node << 16) | curr);
+            }
+            step++;
+        }
+        return -1;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     int shortestPathLength(vector<vector<int>>& graph) {
@@ -32,4 +57,4 @@ public:
         return res;
     }
 };
-// @lc code=end
+**/

@@ -8,6 +8,47 @@
  * };
  */
 class Codec {
+private:
+    TreeNode* decode(const string& s, int& pos, int min, int max) {
+        if (pos >= s.size()) return NULL;
+        
+        int val;
+        memcpy(&val, &s[pos], sizeof(int));
+        if (!(val >= min && val <= max)) return NULL;
+        
+        TreeNode* root = new TreeNode(val);
+        pos += sizeof(int);
+        root->left = decode(s, pos, min, val);
+        root->right = decode(s, pos, val, max);
+        return root;
+    }
+    
+    void encode(TreeNode* root, string& s) {
+        if (!root) return;
+        char buf[4];
+        memcpy(buf, &(root->val), sizeof(int));
+        for (int i = 0; i < 4; i++) s.push_back(buf[i]);
+        encode(root->left, s);
+        encode(root->right, s);
+    }
+    
+public:
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string s;
+        encode(root, s);
+        return s;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        int pos = 0;
+        return decode(data, pos, INT_MIN, INT_MAX);
+    }
+};
+
+/**
+class Codec {
 public:
 
     // Encodes a tree to a single string.
@@ -43,7 +84,6 @@ private:
     }
 };
 
-/**
 class Codec {
 public:
 

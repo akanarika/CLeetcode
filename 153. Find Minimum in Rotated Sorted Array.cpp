@@ -1,4 +1,21 @@
 class Solution {
+private:
+    int findMin(vector<int>& nums, int low, int high) {
+        if (high == low) return nums[low];
+        if (nums[high - 1] >= nums[low]) return nums[low];
+        
+        int mid = low + (high - low) / 2;
+        return min(findMin(nums, low, mid), findMin(nums, mid, high));
+    }
+    
+public:
+    int findMin(vector<int>& nums) {
+        return findMin(nums, 0, nums.size());
+    }
+};
+
+/**
+class Solution {
 public:
     int findMin(vector<int>& nums) {
         return find(nums, 0, nums.size());
@@ -15,3 +32,4 @@ private:
         return -1;
     }
 };
+**/
