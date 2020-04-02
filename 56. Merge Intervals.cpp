@@ -7,6 +7,30 @@
  *     Interval(int s, int e) : start(s), end(e) {}
  * };
  */
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        if(intervals.empty()) return {};
+        
+        sort(intervals.begin(), intervals.end());
+        
+        auto curr = intervals[0];
+        vector<vector<int>> res;
+        for (const auto& interval : intervals) {
+            if (interval[0] <= curr[1]) {
+                curr[1] = max(curr[1], interval[1]);
+            } else {
+                res.push_back(curr);
+                curr = interval;
+            }
+        }
+        
+        res.push_back(curr);
+        return res;
+    }
+};
+
 /**
 class Solution {
 public:
@@ -29,6 +53,7 @@ public:
 };
 **/
 
+/**
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
@@ -50,3 +75,4 @@ public:
         return res;
     }
 };
+**/

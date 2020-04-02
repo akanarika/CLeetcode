@@ -1,6 +1,30 @@
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
+        vector<int> freq(26, 0);
+        int maxfreq = 0;
+        int maxfreqCnt = 0;
+        for (const auto& t : tasks) {
+            freq[t - 'A']++;
+            if (freq[t - 'A'] > maxfreq) {
+                maxfreq = freq[t - 'A'];
+                maxfreqCnt = 1;
+            } else if (freq[t - 'A'] == maxfreq) {
+                maxfreqCnt++;
+            }
+        }
+        
+        int empty = (n + 1 - maxfreqCnt) * (maxfreq - 1);
+        int total = tasks.size();
+        if (empty <= 0) return total;
+        return max(0, empty - (total - maxfreqCnt * maxfreq)) + total;
+    }
+};
+
+/**
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
         vector<int> v(26, 0);
         int maxFre = 0;
         int maxEle = 0;
@@ -23,3 +47,4 @@ public:
         return interval;
     }
 };
+**/

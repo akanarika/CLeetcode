@@ -1,10 +1,23 @@
-/*
- * @lc app=leetcode id=349 lang=cpp
- *
- * [349] Intersection of Two Arrays
- */
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        // optimize
+        if (nums1.size() > nums2.size()) {
+            swap(nums1, nums2);
+        }
+        
+        unordered_set<int> s(nums1.begin(), nums1.end());
+        vector<int> res;
+        for (const auto& num : nums2) {
+            if (s.erase(num)) res.push_back(num);
+            // optimize
+            if (s.empty()) return res;
+        }
+        return res;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
@@ -20,4 +33,4 @@ public:
         return res;
     }
 };
-// @lc code=end
+**/

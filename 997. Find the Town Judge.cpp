@@ -1,10 +1,25 @@
-/*
- * @lc app=leetcode id=997 lang=cpp
- *
- * [997] Find the Town Judge
- */
+class Solution {
+public:
+    int findJudge(int N, vector<vector<int>>& trust) {
+        vector<int> trusting(N + 1, 0);
+        vector<int> trusted(N + 1, 0);
+        
+        for (const auto& t : trust) {
+            // a trusts b
+            int a = t[0];
+            int b = t[1];
+            trusting[a]++;
+            trusted[b]++;
+        }
+        
+        for (int i = 1; i <= N; i++) {
+            if (!trusting[i] && trusted[i] == N - 1) return i;
+        }
+        return -1;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     int findJudge(int N, vector<vector<int>>& trust) {
@@ -36,4 +51,4 @@ public:
         return judge;
     }
 };
-// @lc code=end
+**/
