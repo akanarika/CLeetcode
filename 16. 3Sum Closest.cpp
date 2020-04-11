@@ -1,10 +1,31 @@
-/*
- * @lc app=leetcode id=16 lang=cpp
- *
- * [16] 3Sum Closest
- */
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int mindiff = INT_MAX;
+        int res = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            int t = target - nums[i];
+            int p = i + 1;
+            int q = nums.size() - 1;
+            while (p < q) {
+                int currdiff = abs(nums[p] + nums[q] - t);
+                if (currdiff < mindiff) {
+                    mindiff = currdiff;
+                    res = nums[p] + nums[q] + nums[i];
+                }
+                if (t < nums[p] + nums[q]) {
+                    q--;
+                } else if (t > nums[p] + nums[q]) {
+                    p++;
+                } else return target;
+            }
+        }
+        return res;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
@@ -42,4 +63,4 @@ public:
         return closest;
     }
 };
-// @lc code=end
+**/

@@ -1,10 +1,23 @@
-/*
- * @lc app=leetcode id=239 lang=cpp
- *
- * [239] Sliding Window Maximum
- */
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> res;
+        deque<pair<int, int>> q;
+        for (int i = 0; i < nums.size(); i++) {
+            while (!q.empty() && (i - q.front().second >= k)) {
+                q.pop_front();
+            }
+            while (!q.empty() && (q.back().first < nums[i])) {
+                q.pop_back();
+            }
+            q.emplace_back(nums[i], i);
+            if (i >= k - 1) res.push_back(q.front().first);
+        }
+        return res;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 private:
     class Q {
@@ -36,9 +49,7 @@ public:
         return res;
     }
 };
-// @lc code=end
-
-/**
+ 
 class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {

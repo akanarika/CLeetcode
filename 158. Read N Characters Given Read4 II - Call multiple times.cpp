@@ -1,11 +1,32 @@
-/*
- * @lc app=leetcode id=158 lang=cpp
- *
- * [158] Read N Characters Given Read4 II - Call multiple times
- */
-
-// @lc code=start
 // Forward declaration of the read4 API.
+int read4(char *buf);
+
+class Solution {
+private:
+    char prevbuf[4];
+    int previ = 0;
+    int prevc = 0;
+public:
+    /**
+     * @param buf Destination buffer
+     * @param n   Number of characters to read
+     * @return    The number of actual characters read
+     */
+    int read(char *buf, int n) {
+        int cnt = 0;
+        while (cnt < n) {
+            if (previ == prevc) {
+                prevc = read4(prevbuf);
+                previ = 0;
+                if (!prevc) return cnt;
+            }
+            while (previ < prevc && cnt < n) buf[cnt++] = prevbuf[previ++];
+        }
+        return cnt;
+    }
+};
+
+/**
 int read4(char *buf);
 
 class Solution {
@@ -14,11 +35,6 @@ class Solution {
     int prevCount = 0;
 
 public:
-    /**
-     * @param buf Destination buffer
-     * @param n   Number of characters to read
-     * @return    The number of actual characters read
-     */
     int read(char *buf, int n) {
         int totalCount = 0;
 
@@ -35,4 +51,4 @@ public:
         return totalCount;
     }
 };
-// @lc code=end
+**/

@@ -1,10 +1,26 @@
-/*
- * @lc app=leetcode id=32 lang=cpp
- *
- * [32] Longest Valid Parentheses
- */
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int n = s.length();
+        int res = 0;
+        stack<int> stk;
+        for (int i = 0; i < n; i++) {
+            if (s[i] == '(') {
+                stk.push(i);
+            } else {
+                if (!stk.empty() && s[stk.top()] == '(') {
+                    stk.pop();
+                    res = max(res, stk.empty() ? i + 1 : i - stk.top());
+                } else {
+                    stk.push(i);
+                }
+            }
+        }
+        return res;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     int longestValidParentheses(string s) {
@@ -37,4 +53,4 @@ public:
         return res;
     }
 };
-// @lc code=end
+**/

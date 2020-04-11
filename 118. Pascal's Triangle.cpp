@@ -1,6 +1,24 @@
 class Solution {
 public:
     vector<vector<int>> generate(int numRows) {
+        if (!numRows) return {};
+        
+        vector<vector<int>> res = {{1}};
+        for (int i = 1; i < numRows; i++) {
+            vector<int> row;
+            for (int c = 0; c <= i; c++) {
+                row.push_back((c == 0 ? 0 : res[i - 1][c - 1]) + (c == i? 0 : res[i - 1][c]));
+            }
+            res.push_back(row);
+        }
+        return res;
+    }
+};
+
+/**
+ class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
         vector<vector<int>> res;
         if (numRows == 0) return res;
         
@@ -21,3 +39,4 @@ public:
         return res;
     }
 };
+**/
