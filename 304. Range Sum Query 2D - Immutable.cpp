@@ -1,4 +1,29 @@
 class NumMatrix {
+private:
+    vector<vector<int>> s;
+public:
+    NumMatrix(vector<vector<int>>& matrix) {
+        if (matrix.empty()) return;
+        int h = matrix.size();
+        int w = matrix[0].size();
+        s = vector<vector<int>>(h, vector<int>(w, 0));
+        int curr = 0;
+        for (int i = 0; i < h; i++) {
+            curr = 0;
+            for (int j = 0; j < w; j++) {
+                curr += matrix[i][j];
+                s[i][j] = curr + (i == 0 ? 0 : s[i - 1][j]);
+            }
+        }
+    }
+    
+    int sumRegion(int row1, int col1, int row2, int col2) {
+        return s[row2][col2] - (row1 == 0 ? 0 : s[row1 - 1][col2]) - (col1 == 0 ? 0 : s[row2][col1 - 1]) + (row1 == 0 || col1 == 0 ? 0 : s[row1 - 1][col1 - 1]);
+    }
+};
+
+/**
+class NumMatrix {
     vector<vector<int>> m;
 public:
     NumMatrix(vector<vector<int>>& matrix) {
@@ -28,9 +53,4 @@ public:
         return m[row2][col2] - up - left + upLeft;
     }
 };
-
-/**
- * Your NumMatrix object will be instantiated and called as such:
- * NumMatrix* obj = new NumMatrix(matrix);
- * int param_1 = obj->sumRegion(row1,col1,row2,col2);
- */
+**/

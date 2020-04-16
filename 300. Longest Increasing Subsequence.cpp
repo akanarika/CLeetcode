@@ -1,6 +1,24 @@
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
+        map<int, int> m;
+        int res = 0;
+        for (const auto& num : nums) {
+            int longest = 1;
+            for (auto it = m.begin(); it != m.end() && it->first < num; it++) {
+                longest = max(longest, 1 + it->second);
+            }
+            m[num] = longest;
+            res = max(res, longest);
+        }
+        return res;
+    }
+};
+
+/**
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
         map<int, int> l;
         int m = 0;
         for (auto num : nums) {
@@ -18,3 +36,4 @@ public:
         return m;
     }
 };
+**/

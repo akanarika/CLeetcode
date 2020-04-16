@@ -1,10 +1,30 @@
-/*
- * @lc app=leetcode id=347 lang=cpp
- *
- * [347] Top K Frequent Elements
- */
+class Solution {
+public:
+    typedef pair<int, int> pi;
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> cnt;
+        for (const auto& num : nums) {
+            cnt[num]++;
+        }
+        
+        priority_queue<pi, vector<pi>, greater<pi>> q;
+        for (auto pr : cnt) {
+            if (q.size() < k || q.top().first < pr.second) {
+                q.emplace(pr.second, pr.first);
+            }
+            if (q.size() > k) q.pop();
+        }
+        
+        vector<int> res;
+        while (!q.empty()) {
+            res.push_back(q.top().second);
+            q.pop();
+        }
+        return res;
+    }
+};
 
-// @lc code=start
+/**
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
@@ -29,4 +49,4 @@ public:
         return res;
     }
 };
-// @lc code=end
+**/
