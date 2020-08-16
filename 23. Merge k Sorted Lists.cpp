@@ -6,6 +6,33 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
+class Solution {
+public:
+	typedef pair<int, ListNode*> pi;
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		priority_queue<pi, vector<pi>, greater<pi>> q;
+		for (const auto& head : lists) {
+			if (head) q.emplace(head->val, head);
+		}
+
+		ListNode* pre = new ListNode(0);
+		ListNode* p = pre;
+		while (!q.empty()) {
+			ListNode* node = q.top().second;
+			q.pop();
+			if (node->next) {
+				q.emplace(node->next->val, node->next);
+			}
+			node->next = NULL;
+			p->next = node;
+			p = p->next;
+		}
+		return pre->next;
+	}
+};
+
+/**
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
@@ -31,7 +58,6 @@ public:
     }
 };
 
-/**
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
