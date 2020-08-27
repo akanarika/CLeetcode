@@ -18,6 +18,7 @@ public:
     
     int get(int key) {
         if (kv.count(key)) {
+            // insert i to position from x: void splice (iterator position, list& x, iterator i);
             l.splice(l.begin(), l, kv[key].first);
             return kv[key].second;
         }
@@ -26,6 +27,7 @@ public:
     
     void put(int key, int value) {
         if (kv.count(key)) {
+            // in case the value changes
             kv[key].second = value;
             l.splice(l.begin(), l, kv[key].first);
             return;

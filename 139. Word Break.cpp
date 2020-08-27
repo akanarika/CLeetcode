@@ -1,63 +1,22 @@
-/*
- * @lc app=leetcode id=139 lang=cpp
- *
- * [139] Word Break
- */
-
-// @lc code=start
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         if (s.empty()) return true;
-
-        unordered_set<string> dict;
-        int maxLen = 0;
-        for (auto word : wordDict) {
-            dict.insert(word);
-            maxLen = max(maxLen, (int)word.length());
-        }
-        vector<bool> valid(s.length() + 1, false);
-        valid[0] = true;
-        for (int i = 0; i < s.length(); i++) {
-            if (!valid[i]) continue;
-            int len = 1;
-            while (len <= maxLen) {
-                if (len + i <= s.length() && !valid[len + i]) {
-                    string sub = s.substr(i, len);
-                    if (dict.count(sub)) {
-                        valid[len + i] = true;
-                    }
+        unordered_set<string> set(wordDict.begin(), wordDict.end());
+        
+        vector<bool> dp(1 + s.length(), false);
+        dp[0] = 1;
+        
+        for (int i = 1; i <= s.length(); i++) {
+            if (dp[i]) continue;
+            for (int prev = i - 1; prev >= 0; prev--) {
+                if (dp[prev] && set.count(s.substr(prev, i - prev))) {
+                    dp[i] = 1;
+                    break;
                 }
-                len++;
             }
-        }
-        return valid[s.length()];
-    }
-};
-// @lc code=end
-
-/**
-class Solution {
-public:
-    bool wordBreak(string s, vector<string>& wordDict) {
-        unordered_map<string, bool> dict;
-        for (auto word : wordDict) {
-            dict[word] = true;
         }
         
-        vector<int> dp(s.size(), 0);
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = i; j >= 0; j--) {
-                if (j == 0 || dp[j - 1]) {
-                    string key = s.substr(j, i - j + 1);
-                    if (dict[key]) {
-                        dp[i] = 1;
-                        break;
-                    }
-                }
-            }
-        }
-        return dp[s.size() - 1];
+        return dp[s.length()];
     }
 };
-**/

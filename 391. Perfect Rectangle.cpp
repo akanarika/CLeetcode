@@ -1,42 +1,35 @@
 class Solution {
 public:
     bool isRectangleCover(vector<vector<int>>& rectangles) {
-        int left = INT_MAX;
-        int bottom = INT_MAX;
+        unordered_set<string> set;
+        int area = 0;
+        int min_x = INT_MAX;
+        int min_y = INT_MAX;
+        int max_x = INT_MIN;
+        int max_y = INT_MIN;
         
-        int right = INT_MIN;
-        int top = INT_MIN;
-        
-        unordered_map<string, int> cnt;
-        int total_area = 0; 
-        for (auto it = rectangles.begin(); it != rectangles.end(); it++) {
-            vector<int>& rec = *it;
-            left = min(left, rec[0]);
-            bottom = min(bottom, rec[1]);
+        for (const auto& rec : rectangles) {
+            area += (rec[2] - rec[0]) * (rec[3] - rec[1]);
+            min_x = min(min_x, rec[0]);
+            min_y = min(min_y, rec[1]);
+            max_x = max(max_x, rec[2]);
+            max_y = max(max_y, rec[3]);
+            const string ax = to_string(rec[0]);
+            const string ay = to_string(rec[1]);
+            const string bx = to_string(rec[2]);
+            const string by = to_string(rec[3]);
             
-            right = max(right, rec[2]);
-            top = max(top, rec[3]);
-            
-            string bl = to_string(rec[1]) + " " + to_string(rec[0]);
-            string br = to_string(rec[1]) + " " + to_string(rec[2]);
-            string tl = to_string(rec[3]) + " " + to_string(rec[0]);
-            string tr = to_string(rec[3]) + " " + to_string(rec[2]);
-            
-            if (!cnt.erase(bl)) cnt[bl]++;
-            if (!cnt.erase(br)) cnt[br]++;
-            if (!cnt.erase(tl)) cnt[tl]++;
-            if (!cnt.erase(tr)) cnt[tr]++;
-            
-            total_area += (rec[2] - rec[0]) * (rec[3] - rec[1]);
+            if (!set.erase(ax + ay)) set.insert(ax + ay);
+            if (!set.erase(bx + ay)) set.insert(bx + ay);
+            if (!set.erase(bx + by)) set.insert(bx + by);
+            if (!set.erase(ax + by)) set.insert(ax + by);
         }
         
-        if (!cnt.count(to_string(bottom) + " " + to_string(left))
-            || !cnt.count(to_string(bottom) + " " + to_string(right))
-            || !cnt.count(to_string(top) + " " + to_string(left))
-            || !cnt.count(to_string(top) + " " + to_string(right))) {
-            return false;
-        }
-        
-        return cnt.size() == 4 && total_area == (right - left) * (top - bottom);
+        return area == (max_y - min_y) * (max_x - min_x)
+            && set.size() == 4
+            && set.count(to_string(min_x) + to_string(min_y)) 
+            && set.count(to_string(min_x) + to_string(max_y))
+            && set.count(to_string(max_x) + to_string(min_y))
+            && set.count(to_string(max_x) + to_string(max_y));
     }
 };
